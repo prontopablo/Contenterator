@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8; /* Light gray background color for the page */
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  text-align: center;
+}
+
+.header {
+  background-color: #007bff; /* Blue header background color */
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.home-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
+}
