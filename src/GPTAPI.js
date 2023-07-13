@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-const API_KEY = "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";
+const API_KEY = "Your API key";
 const openai = new OpenAIApi(new Configuration({ apiKey: API_KEY }));
 
 export const getGPTResponse = async (userInput, gameType) => {
