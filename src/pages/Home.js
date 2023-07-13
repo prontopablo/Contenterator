@@ -1,31 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Home.css';
+import tttIcon from './tttIcon.png';
+//import chessIcon from './chessIcon.jpg';
+//import Countdown from './countdownIcon.jpg';
 
 const Home = () => {
   const games = [
     {
       name: 'Tic Tac Toe',
-      image: '../../tttIcon.png', // Replace with the path to the Tic Tac Toe image
+      image: tttIcon,
     },
     {
       name: 'Chess',
-      image: '../../KerwanMap.jpg', // Replace with the path to the Chess image
+      image: tttIcon,
     },
     {
-      name: 'Strategy Game',
-      image: '../../KerwanMap.jpg', // Replace with the path to the Strategy Game image
+      name: 'Countdown',
+      image: tttIcon,
     },
   ];
 
   return (
     <div>
-      <h1>Welcome to Gamerator</h1>
       <div className="game-list">
         {games.map((game, index) => (
           <Link to={`/${game.name.toLowerCase().replace(/\s+/g, '-')}`} key={index}>
             <div className="game-card">
               <img src={game.image} alt={game.name} />
-              <h3>{game.name}</h3>
             </div>
           </Link>
         ))}

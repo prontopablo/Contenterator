@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import TicTacToe from './pages/TicTacToe';
 import Chess from './pages/ChessPage';
-import StrategyGame from './pages/StrategyGame';
+import Countdown from './pages/Countdown';
 import './App.css';
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/tic-tac-toe" element={<TicTacToe />} />
             <Route path="/chess" element={<Chess />} />
-            <Route path="/strategy-game" element={<StrategyGame />} />
+            <Route path="/Countdown" element={<Countdown />} />
           </Routes>
         </div>
       </div>
