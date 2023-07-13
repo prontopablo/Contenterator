@@ -29,7 +29,7 @@ export const getGPTResponse = async (userInput, gameType) => {
           content:
             gameType === "tic-tac-toe"
               ? `You can improve your chances of winning by following these heuristics:\n1. If you have two in a row, complete it.\n2. If your opponent has two in a row, block it.\n3.`
-              : "Check that your move is legal (the piece you are trying to move is still there etc.). Please respond with algebraic notation and nothing else so as not to mess up the JSON", // For chess, no system message is required
+              : "Check that your move is legal (the piece you are trying to move is still there etc.). Please respond with algebraic notation and nothing else so as not to mess up the JSON", 
         },
       ],
     });
