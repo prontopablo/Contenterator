@@ -1,0 +1,114 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .clock-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .clock {
+    margin: 0 auto;
+  }
+  
+  .timer {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .letters-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .letters-section p {
+    font-size: 20px;
+  }
+  
+  .buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .button:hover {
+    background-color: #2980b9;
+  }
+  
+  .selected-letters {
+    margin-bottom: 20px;
+  }
+  
+  .selected-letters p {
+    font-size: 18px;
+  }
+  
+  .solution {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .letter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .letter-button {
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .letter-button:hover {
+    background-color: #e6e6e6;
+  }
+  
+  .react-clock__hand.react-clock__hand__hours {
+    display: none;
+  }
+  
+  .react-clock__hand.react-clock__hand__minutes {
+    display: none;
+  }
+  

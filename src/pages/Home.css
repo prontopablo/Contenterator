@@ -3,7 +3,7 @@
   }
   
   .game-card {
-    margin-right: 5px;
+    margin-right: 0px;
     transition: transform 0.3s ease;
   }
   
@@ -12,8 +12,8 @@
   }
   
   .game-card img {
-    max-width: 100%;
-    height: 760px;
+    max-width: 98%;
+    height: 700px;
     object-fit: cover; /* Maintain aspect ratio */
   }
   
