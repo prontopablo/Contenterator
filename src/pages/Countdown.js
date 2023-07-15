@@ -9,6 +9,7 @@ const Countdown = () => {
   const [solution, setSolution] = useState('');
   const [timer, setTimer] = useState(30);
   const [wordList, setWordList] = useState([]);
+  const [score, setScore] = useState(0);
 
   const vowels = 'AEIOU';
   const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
@@ -17,8 +18,9 @@ const Countdown = () => {
     fetch('/words.txt')
       .then((response) => response.text())
       .then((text) => {
-        const words = text.split('\n');
+        const words = text.split(/\r?\n/);
         setWordList(words);
+        console.log(words); // Console log the wordList array
       })
       .catch((error) => {
         console.error('Error reading the word list:', error);
@@ -29,14 +31,19 @@ const Countdown = () => {
     loadWordList();
   }, [loadWordList]);
 
-  const handleSolve = useCallback(() => {
+  const handleCheck = useCallback(() => {
     const selectedWord = selectedLetters.join('').toLowerCase();
-    const isValidWord = wordList.includes(selectedWord);
+    const isValidWord = wordList.some((word, index) => {
+      if (word.toLowerCase() === selectedWord) {
+        setScore(selectedWord.length);
+        setSolution(`Word is valid, ${index + 1}/${wordList.length} alphabetically`);
+        return true;
+      }
+      return false;
+    });
 
-    if (isValidWord) {
-      setSolution('Word is valid');
-    } else {
-      setSolution('No valid word found, ' + selectedWord + ' is not a word.');
+    if (!isValidWord) {
+      setSolution(`No valid word found, ${selectedWord} is not a word.`);
     }
   }, [selectedLetters, wordList]);
 
@@ -48,12 +55,12 @@ const Countdown = () => {
 
       if (timer === 0) {
         clearInterval(interval);
-        handleSolve();
+        handleCheck();
       }
 
       return () => clearInterval(interval);
     }
-  }, [letters, timer, handleSolve]);
+  }, [letters, timer, handleCheck]);
 
   const handleGenerateLetter = (type) => {
     if (letters.length >= 9) {
@@ -66,10 +73,15 @@ const Countdown = () => {
   };
 
   const handleSelectLetter = (letter) => {
-    setSelectedLetters([...selectedLetters, letter]);
-    setLetters(letters.filter((l) => l !== letter));
+    const letterIndex = letters.findIndex((l) => l === letter);
+    if (letterIndex !== -1) {
+      const updatedLetters = [...letters];
+      updatedLetters.splice(letterIndex, 1);
+      setSelectedLetters([...selectedLetters, letter]);
+      setLetters(updatedLetters);
+    }
   };
-
+  
   const handleClearSelection = () => {
     setSelectedLetters([]);
     setLetters([]);
@@ -79,13 +91,19 @@ const Countdown = () => {
     <div className="container">
       <h1>Countdown</h1>
       <div className="clock-container">
-        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, timer)} size={150} renderNumbers={true} />
+        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, timer)} size={200} renderNumbers={false} />
         <div className="timer">{timer}</div>
       </div>
       <div className="letters-section">
-        <p>{letters.join(' ')}</p>
-        <p>Selected Letters: {selectedLetters.join(' ')}</p>
-        <p>Solution: {solution}</p>
+        {letters.map((letter, index) => (
+          <p key={index}>{letter}</p>
+        ))}
+      </div>
+      <div className="score-section">
+        <p>{selectedLetters.join(' ')}</p> 
+        <button onClick={handleCheck}>Check</button>
+        <p>{solution}</p>
+        <p>Score: {score}</p>
       </div>
       <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9}>
         Add Vowel
@@ -94,7 +112,7 @@ const Countdown = () => {
         Add Consonant
       </button>
       <button onClick={handleClearSelection}>Clear Selection</button>
-      <button onClick={handleSolve}>Solve</button>
+      
       <div>
         {letters.map((letter, index) => (
           <button key={index} onClick={() => handleSelectLetter(letter)}>

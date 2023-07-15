@@ -1,106 +1,116 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .clock-container {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .clock {
-    margin: 0 auto;
-  }
-  
-  .timer {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .letters-section {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .letters-section p {
-    font-size: 20px;
-  }
-  
-  .buttons-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    background-color: #3498db;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .button:hover {
-    background-color: #2980b9;
-  }
-  
-  .selected-letters {
-    margin-bottom: 20px;
-  }
-  
-  .selected-letters p {
-    font-size: 18px;
-  }
-  
-  .solution {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .letter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .letter-button {
-    padding: 10px 15px;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    background-color: #f2f2f2;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .letter-button:hover {
-    background-color: #e6e6e6;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 36px; 
+  margin-bottom: 30px; 
+  text-align: center;
+}
+
+.clock-container {
+  margin-bottom: 10px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clock {
+  margin: 0 auto;
+  width: 200px; 
+}
+
+.timer {
+  font-size: 32px; 
+  font-weight: bold;
+  margin-top: 10px; 
+}
+
+.letters-section {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.letters-section p {
+  font-size: 40px; 
+  display: inline-block;
+  padding: 5px; 
+  margin: 5px; 
+  border: 3px solid #1b5ec2;
+  border-radius: 3px;
+  background-color: #1b5ec2;
+  color: white;
+  box-sizing: border-box; 
+  width: 50px; 
+  text-align: center; 
+}
+
+.buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px; 
+  margin-bottom: 30px; 
+}
+
+.button {
+  padding: 15px 30px; 
+  font-size: 24px; 
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}
+
+.selected-letters {
+  margin-bottom: 30px; 
+}
+
+.selected-letters p {
+  font-size: 24px; 
+}
+
+.solution {
+  font-size: 32px; 
+  font-weight: bold;
+}
+
+.letter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px; 
+}
+
+.letter-button {
+  padding: 15px 20px; 
+  font-size: 28px; 
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.letter-button:hover {
+  background-color: #e6e6e6;
+}
