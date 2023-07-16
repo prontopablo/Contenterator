@@ -33,20 +33,59 @@ const Countdown = () => {
 
   const handleCheck = useCallback(() => {
     const selectedWord = selectedLetters.join('').toLowerCase();
-    const isValidWord = wordList.some((word, index) => {
-      if (word.toLowerCase() === selectedWord) {
-        setScore(selectedWord.length);
-        setSolution(`Word is valid, ${index + 1}/${wordList.length} alphabetically`);
-        return true;
+    console.log('Word to be checked:', selectedWord); // Console log the word being checked
+  
+    let validWords = [];
+    let maxLength = 0;
+  
+    for (let i = 0; i < selectedLetters.length; i++) {
+      const permutationIndices = getPermutationIndices(selectedLetters.length, i + 1);
+      for (let indices of permutationIndices) {
+        const word = indices.map((index) => selectedLetters[index]).join('').toLowerCase();
+        if (wordList.includes(word)) {
+          if (word.length > maxLength) {
+            validWords = [word];
+            maxLength = word.length;
+          } else if (word.length === maxLength) {
+            validWords.push(word);
+          }
+        }
       }
-      return false;
-    });
-
-    if (!isValidWord) {
-      setSolution(`No valid word found, ${selectedWord} is not a word.`);
+    }
+  
+    if (validWords.length > 0) {
+      setScore(maxLength);
+      const validWordCount = validWords.length;
+      const validWordIndex = wordList.findIndex((word) => word.toLowerCase() === validWords[0]);
+      setSolution(`Word is valid, ${validWordIndex + 1}/${wordList.length} alphabetically (${validWordCount} valid word${validWordCount > 1 ? 's' : ''} found)`);
+    } else {
+      setSolution(`No valid word found. "${selectedWord}" is not a word.`);
     }
   }, [selectedLetters, wordList]);
-
+  
+  // Helper function to generate permutation indices
+  function getPermutationIndices(n, k) {
+    const indices = Array.from({ length: k }, (_, i) => i);
+    const result = [indices.slice()];
+  
+    while (true) {
+      let i = k - 1;
+      while (i >= 0 && indices[i] === n - k + i) {
+        i--;
+      }
+      if (i < 0) {
+        break;
+      }
+      indices[i]++;
+      for (let j = i + 1; j < k; j++) {
+        indices[j] = indices[j - 1] + 1;
+      }
+      result.push(indices.slice());
+    }
+  
+    return result;
+  }  
+  
   useEffect(() => {
     if (letters.length === 9) {
       const interval = setInterval(() => {
@@ -72,35 +111,56 @@ const Countdown = () => {
     setLetters([...letters, newLetter]);
   };
 
-  const handleSelectLetter = (letter) => {
-    const letterIndex = letters.findIndex((l) => l === letter);
-    if (letterIndex !== -1) {
-      const updatedLetters = [...letters];
-      updatedLetters.splice(letterIndex, 1);
-      setSelectedLetters([...selectedLetters, letter]);
-      setLetters(updatedLetters);
-    }
-  };
-  
   const handleClearSelection = () => {
     setSelectedLetters([]);
     setLetters([]);
   };
 
+  const handleDragStart = (event, letter) => {
+    event.dataTransfer.setData('text/plain', letter);
+  };
+
+  const handleDrop = (event) => {
+    const letter = event.dataTransfer.getData('text/plain');
+    const letterIndex = letters.findIndex((l) => l === letter);
+    if (letterIndex !== -1) {
+      const updatedLetters = [...letters];
+      updatedLetters.splice(letterIndex, 1);
+      const dropIndex = event.target.getAttribute('data-index');
+      updatedLetters.splice(dropIndex, 0, letter);
+      setLetters(updatedLetters);
+      setSelectedLetters(updatedLetters);
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="container">
-      <h1>Countdown</h1>
       <div className="clock-container">
-        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, timer)} size={200} renderNumbers={false} />
+        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, 30 - timer)} size={300} renderNumbers={false} />
         <div className="timer">{timer}</div>
       </div>
-      <div className="letters-section">
+      <div
+        className="letters-section"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
         {letters.map((letter, index) => (
-          <p key={index}>{letter}</p>
+          <p
+            key={index}
+            draggable
+            onDragStart={(event) => handleDragStart(event, letter)}
+            data-index={index}
+          >
+            {letter}
+          </p>
         ))}
       </div>
       <div className="score-section">
-        <p>{selectedLetters.join(' ')}</p> 
+        <p>{selectedLetters.join(' ')}</p>
         <button onClick={handleCheck}>Check</button>
         <p>{solution}</p>
         <p>Score: {score}</p>
@@ -112,14 +172,6 @@ const Countdown = () => {
         Add Consonant
       </button>
       <button onClick={handleClearSelection}>Clear Selection</button>
-      
-      <div>
-        {letters.map((letter, index) => (
-          <button key={index} onClick={() => handleSelectLetter(letter)}>
-            {letter}
-          </button>
-        ))}
-      </div>
     </div>
   );
 };
