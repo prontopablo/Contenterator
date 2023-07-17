@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Clock from 'react-clock';
+import { getGPTResponse } from '../GPTAPI.js';
 import 'react-clock/dist/Clock.css';
 import './Countdown.css';
 
@@ -11,6 +12,7 @@ const Countdown = () => {
   const [wordList, setWordList] = useState([]);
   const [score, setScore] = useState(0);
   const [roughWork, setRoughWork] = useState('');
+  const [gptResponse, setGptResponse] = useState('');
 
   const vowels = 'AEIOU';
   const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
@@ -21,7 +23,7 @@ const Countdown = () => {
       .then((text) => {
         const words = text.split(/\r?\n/);
         setWordList(words);
-        console.log(words); 
+        console.log(words);
       })
       .catch((error) => {
         console.error('Error reading the word list:', error);
@@ -34,11 +36,11 @@ const Countdown = () => {
 
   const handleCheck = useCallback(() => {
     const selectedWord = selectedLetters.join('').toLowerCase();
-    console.log('Word to be checked:', selectedWord); 
-  
+    console.log('Word to be checked:', selectedWord);
+
     let validWords = [];
     let maxLength = 0;
-  
+
     for (let i = 0; i < selectedLetters.length; i++) {
       const permutationIndices = getPermutationIndices(selectedLetters.length, i + 1);
       for (let indices of permutationIndices) {
@@ -53,7 +55,7 @@ const Countdown = () => {
         }
       }
     }
-  
+
     if (validWords.length > 0) {
       setScore(maxLength);
       //const validWordCount = validWords.length;
@@ -63,12 +65,12 @@ const Countdown = () => {
       setSolution(`No valid word found.`);
     }
   }, [selectedLetters, wordList]);
-  
+
   // Helper function to generate permutation indices
   function getPermutationIndices(n, k) {
     const indices = Array.from({ length: k }, (_, i) => i);
     const result = [indices.slice()];
-  
+
     while (true) {
       let i = k - 1;
       while (i >= 0 && indices[i] === n - k + i) {
@@ -83,10 +85,10 @@ const Countdown = () => {
       }
       result.push(indices.slice());
     }
-  
+
     return result;
-  }  
-  
+  }
+
   useEffect(() => {
     if (letters.length === 9) {
       const interval = setInterval(() => {
@@ -112,27 +114,21 @@ const Countdown = () => {
     setLetters([...letters, newLetter]);
   };
 
-  const handleClearSelection = () => {
-    setSelectedLetters([]);
-    setLetters([]);
-  };
-
   const handleDragStart = (event, letter, index) => {
     event.dataTransfer.setData('text/plain', JSON.stringify({ letter, index }));
   };
-  
+
   const handleDrop = (event, dropIndex) => {
     const data = JSON.parse(event.dataTransfer.getData('text/plain'));
     const draggedLetter = data.letter;
     const draggedIndex = data.index;
-    
+
     const updatedLetters = [...letters];
     updatedLetters.splice(draggedIndex, 1);
     updatedLetters.splice(dropIndex, 0, draggedLetter);
     setLetters(updatedLetters);
     setSelectedLetters(updatedLetters);
   };
-  
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -142,10 +138,30 @@ const Countdown = () => {
     setRoughWork(event.target.value);
   };
 
+  useEffect(() => {
+    if (letters.length === 9 && timer === 0) {
+      const fetchData = async () => {
+        const response = await getGPTResponse(letters.join(''), 'countdown');
+        console.log('GPT response:', response);
+        setGptResponse(response); // Set GPT response
+      };
+
+      fetchData();
+    }
+  }, [letters, timer]);
+
   return (
     <div className="container">
       <div className="clock-container">
-        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, 30 - timer)} size={300} renderNumbers={false} secondHandLength={90} renderMinuteHand={false} renderMinuteMarks={false}/>
+        <Clock
+          className="clock"
+          value={new Date(0, 0, 0, 0, 0, 30 - timer)}
+          size={300}
+          renderNumbers={false}
+          secondHandLength={90}
+          renderMinuteHand={false}
+          renderMinuteMarks={false}
+        />
       </div>
       <div className="letters-select">
         <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9}>
@@ -155,11 +171,7 @@ const Countdown = () => {
           Consonant
         </button>
       </div>
-      <div
-        className="letters-section"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      >
+      <div className="letters-section" onDrop={handleDrop} onDragOver={handleDragOver}>
         {letters.map((letter, index) => (
           <p
             key={index}
@@ -176,13 +188,15 @@ const Countdown = () => {
         <p>{solution}</p>
         <p>Score: {score}</p>
       </div>
-      <button onClick={handleClearSelection}>Reset</button>
-      <textarea 
+      <textarea
         className="rough-work-textbox"
         placeholder="Rough work..."
         value={roughWork}
         onChange={handleRoughWorkChange}
       />
+      <div className="gpt-response">
+      {gptResponse && <p>GPT Response: {gptResponse}</p>}
+      </div>
     </div>
   );
 };
