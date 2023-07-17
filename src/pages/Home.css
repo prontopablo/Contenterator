@@ -14,6 +14,6 @@
   .game-card img {
     max-width: 98%;
     height: 700px;
-    object-fit: cover; /* Maintain aspect ratio */
+    object-fit: cover;
   }
   

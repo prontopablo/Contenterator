@@ -56,10 +56,10 @@ const Countdown = () => {
     if (validWords.length > 0) {
       setScore(maxLength);
       const validWordCount = validWords.length;
-      const validWordIndex = wordList.findIndex((word) => word.toLowerCase() === validWords[0]);
-      setSolution(`Word is valid, ${validWordIndex + 1}/${wordList.length} alphabetically (${validWordCount} valid word${validWordCount > 1 ? 's' : ''} found)`);
+      //const validWordIndex = wordList.findIndex((word) => word.toLowerCase() === validWords[0]);
+      //setSolution(`Word is valid, ${validWordIndex + 1}/${wordList.length} alphabetically (${validWordCount} valid word${validWordCount > 1 ? 's' : ''} found)`);
     } else {
-      setSolution(`No valid word found. "${selectedWord}" is not a word.`);
+      setSolution(`No valid word found.`);
     }
   }, [selectedLetters, wordList]);
   
@@ -116,22 +116,22 @@ const Countdown = () => {
     setLetters([]);
   };
 
-  const handleDragStart = (event, letter) => {
-    event.dataTransfer.setData('text/plain', letter);
+  const handleDragStart = (event, letter, index) => {
+    event.dataTransfer.setData('text/plain', JSON.stringify({ letter, index }));
   };
-
-  const handleDrop = (event) => {
-    const letter = event.dataTransfer.getData('text/plain');
-    const letterIndex = letters.findIndex((l) => l === letter);
-    if (letterIndex !== -1) {
-      const updatedLetters = [...letters];
-      updatedLetters.splice(letterIndex, 1);
-      const dropIndex = event.target.getAttribute('data-index');
-      updatedLetters.splice(dropIndex, 0, letter);
-      setLetters(updatedLetters);
-      setSelectedLetters(updatedLetters);
-    }
+  
+  const handleDrop = (event, dropIndex) => {
+    const data = JSON.parse(event.dataTransfer.getData('text/plain'));
+    const draggedLetter = data.letter;
+    const draggedIndex = data.index;
+    
+    const updatedLetters = [...letters];
+    updatedLetters.splice(draggedIndex, 1);
+    updatedLetters.splice(dropIndex, 0, draggedLetter);
+    setLetters(updatedLetters);
+    setSelectedLetters(updatedLetters);
   };
+  
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -141,7 +141,14 @@ const Countdown = () => {
     <div className="container">
       <div className="clock-container">
         <Clock className="clock" value={new Date(0, 0, 0, 0, 0, 30 - timer)} size={300} renderNumbers={false} />
-        <div className="timer">{timer}</div>
+      </div>
+      <div className="letters-select">
+        <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9}>
+          Vowel
+        </button>
+        <button onClick={() => handleGenerateLetter('consonant')} disabled={letters.length >= 9}>
+          Consonant
+        </button>
       </div>
       <div
         className="letters-section"
@@ -152,7 +159,7 @@ const Countdown = () => {
           <p
             key={index}
             draggable
-            onDragStart={(event) => handleDragStart(event, letter)}
+            onDragStart={(event) => handleDragStart(event, letter, index)}
             data-index={index}
           >
             {letter}
@@ -160,18 +167,11 @@ const Countdown = () => {
         ))}
       </div>
       <div className="score-section">
-        <p>{selectedLetters.join(' ')}</p>
         <button onClick={handleCheck}>Check</button>
         <p>{solution}</p>
         <p>Score: {score}</p>
       </div>
-      <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9}>
-        Add Vowel
-      </button>
-      <button onClick={() => handleGenerateLetter('consonant')} disabled={letters.length >= 9}>
-        Add Consonant
-      </button>
-      <button onClick={handleClearSelection}>Clear Selection</button>
+      <button onClick={handleClearSelection}>Reset</button>
     </div>
   );
 };

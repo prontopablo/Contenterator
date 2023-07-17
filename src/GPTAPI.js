@@ -23,7 +23,6 @@ export const getGPTResponse = async (userInput, gameType) => {
           role: "user",
           content: prompt,
         },
-        // Add a system message with heuristics for tic-tac-toe only
         {
           role: "system",
           content:

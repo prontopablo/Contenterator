@@ -7,28 +7,11 @@
   font-family: Arial, sans-serif;
 }
 
-h1 {
-  font-size: 36px; 
-  margin-bottom: 30px; 
-  text-align: center;
-}
-
 .clock-container {
   margin-bottom: 10px; 
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.clock {
-  margin: 0 auto;
-  width: 200px; 
-}
-
-.timer {
-  font-size: 32px; 
-  font-weight: bold;
-  margin-top: 10px; 
 }
 
 .letters-section {
@@ -48,69 +31,5 @@ h1 {
   box-sizing: border-box; 
   width: 50px; 
   text-align: center; 
-}
-
-.buttons-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px; 
-  margin-bottom: 30px; 
-}
-
-.button {
-  padding: 15px 30px; 
-  font-size: 24px; 
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  background-color: #3498db;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #2980b9;
-}
-
-.selected-letters {
-  margin-bottom: 30px; 
-}
-
-.selected-letters p {
-  font-size: 24px; 
-}
-
-.solution {
-  font-size: 32px; 
-  font-weight: bold;
-}
-
-.letter-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px; 
-}
-
-.letter-button {
-  padding: 15px 20px; 
-  font-size: 28px; 
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  background-color: #f2f2f2;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.letter-button:hover {
-  background-color: #e6e6e6;
+  font-family: "impact"
 }
