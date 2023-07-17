@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './TicTacToe.css';
 import { getGPTResponse } from '../GPTAPI.js';
 
@@ -8,25 +8,10 @@ const TicTacToe = () => {
   const [player, setPlayer] = useState('X');
   const [gameOver, setGameOver] = useState(false);
   const [gameResult, setGameResult] = useState(null);
-  const [gptResponse, setGPTResponse] = useState('');  
-  const [isGPTThinking, setIsGPTThinking] = useState(false); // New state variable
+  const [gptResponse, setGPTResponse] = useState('');
+  const [isGPTThinking, setIsGPTThinking] = useState(false);
 
-  useEffect(() => {
-    const winner = checkWinner();
-    if (winner) {
-      setGameOver(true);
-      setGameResult(winner);
-    } else {
-      setGameOver(false);
-      setGameResult(null);
-      if (player === 'O' && !isGPTThinking) {
-        setIsGPTThinking(true);
-        makeGPTMove();
-      }
-    }
-  }, [board, player, isGPTThinking]);
-
-  const checkWinner = () => {
+  const checkWinner = useCallback(() => {
     const winPatterns = [
       [0, 1, 2], [3, 4, 5], [6, 7, 8],
       [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -45,19 +30,9 @@ const TicTacToe = () => {
     }
 
     return null;
-  };
+  }, [board]);
 
-  const handleClick = async (index) => {
-    if (!board[index] && !gameOver && player === 'X') {
-      const newBoard = [...board];
-      newBoard[index] = player;
-      setBoard(newBoard);
-      setPlayer('O');
-      setGPTResponse(''); // Clear GPT's response when user makes a move
-    }
-  };
-
-  const boardToGridText = () => {
+  const boardToGridText = useCallback(() => {
     let gridText = '';
     for (let i = 0; i < 9; i++) {
       if (i !== 0 && i % 3 === 0) {
@@ -67,9 +42,9 @@ const TicTacToe = () => {
       if (i % 3 !== 2) gridText += '|';
     }
     return gridText;
-  };
+  }, [board]);
 
-  const makeGPTMove = async () => {
+  const makeGPTMove = useCallback(async () => {
     if (!gameOver && player === 'O') {
       const GPTInput = boardToGridText();
       const GPTResponse = await getGPTResponse(GPTInput, "tic-tac-toe");
@@ -81,10 +56,35 @@ const TicTacToe = () => {
         newBoard[GPTMove] = player;
         setBoard(newBoard);
         setPlayer('X');
-        setIsGPTThinking(false); 
+        setIsGPTThinking(false);
       } else {
-        setIsGPTThinking(false); 
+        setIsGPTThinking(false);
       }
+    }
+  }, [board, gameOver, player, boardToGridText]);
+
+  useEffect(() => {
+    const winner = checkWinner();
+    if (winner) {
+      setGameOver(true);
+      setGameResult(winner);
+    } else {
+      setGameOver(false);
+      setGameResult(null);
+      if (player === 'O' && !isGPTThinking) {
+        setIsGPTThinking(true);
+        makeGPTMove();
+      }
+    }
+  }, [board, player, isGPTThinking, checkWinner, makeGPTMove]);
+
+  const handleClick = async (index) => {
+    if (!board[index] && !gameOver && player === 'X') {
+      const newBoard = [...board];
+      newBoard[index] = player;
+      setBoard(newBoard);
+      setPlayer('O');
+      setGPTResponse('');
     }
   };
 
@@ -105,7 +105,6 @@ const TicTacToe = () => {
 
   return (
     <div className="tic-tac-toe">
-      <h1>X's and O's</h1>
       <div className="board">
         {board.map((value, index) => renderCell(index))}
       </div>

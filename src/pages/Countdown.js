@@ -10,6 +10,7 @@ const Countdown = () => {
   const [timer, setTimer] = useState(30);
   const [wordList, setWordList] = useState([]);
   const [score, setScore] = useState(0);
+  const [roughWork, setRoughWork] = useState('');
 
   const vowels = 'AEIOU';
   const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
@@ -20,7 +21,7 @@ const Countdown = () => {
       .then((text) => {
         const words = text.split(/\r?\n/);
         setWordList(words);
-        console.log(words); // Console log the wordList array
+        console.log(words); 
       })
       .catch((error) => {
         console.error('Error reading the word list:', error);
@@ -33,7 +34,7 @@ const Countdown = () => {
 
   const handleCheck = useCallback(() => {
     const selectedWord = selectedLetters.join('').toLowerCase();
-    console.log('Word to be checked:', selectedWord); // Console log the word being checked
+    console.log('Word to be checked:', selectedWord); 
   
     let validWords = [];
     let maxLength = 0;
@@ -55,7 +56,7 @@ const Countdown = () => {
   
     if (validWords.length > 0) {
       setScore(maxLength);
-      const validWordCount = validWords.length;
+      //const validWordCount = validWords.length;
       //const validWordIndex = wordList.findIndex((word) => word.toLowerCase() === validWords[0]);
       //setSolution(`Word is valid, ${validWordIndex + 1}/${wordList.length} alphabetically (${validWordCount} valid word${validWordCount > 1 ? 's' : ''} found)`);
     } else {
@@ -137,10 +138,14 @@ const Countdown = () => {
     event.preventDefault();
   };
 
+  const handleRoughWorkChange = (event) => {
+    setRoughWork(event.target.value);
+  };
+
   return (
     <div className="container">
       <div className="clock-container">
-        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, 30 - timer)} size={300} renderNumbers={false} />
+        <Clock className="clock" value={new Date(0, 0, 0, 0, 0, 30 - timer)} size={300} renderNumbers={false} secondHandLength={90} renderMinuteHand={false} renderMinuteMarks={false}/>
       </div>
       <div className="letters-select">
         <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9}>
@@ -172,6 +177,12 @@ const Countdown = () => {
         <p>Score: {score}</p>
       </div>
       <button onClick={handleClearSelection}>Reset</button>
+      <textarea 
+        className="rough-work-textbox"
+        placeholder="Rough work..."
+        value={roughWork}
+        onChange={handleRoughWorkChange}
+      />
     </div>
   );
 };

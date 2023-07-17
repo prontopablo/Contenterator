@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import tttIcon from './tttIcon.png';
-//import chessIcon from './chessIcon.jpg';
-//import Countdown from './countdownIcon.jpg';
+import chessIcon from './chessIcon.png';
+import countdownIcon from './countdownIcon.png';
 
 const Home = () => {
   const games = [
@@ -13,11 +13,11 @@ const Home = () => {
     },
     {
       name: 'Chess',
-      image: tttIcon,
+      image: chessIcon,
     },
     {
       name: 'Countdown',
-      image: tttIcon,
+      image: countdownIcon,
     },
   ];
 
