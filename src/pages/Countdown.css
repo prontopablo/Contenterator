@@ -38,10 +38,22 @@
   margin-top: 10px;
 }
 
+.gpt-section {
+  display: flex;
+  align-items: center;
+}
+
 .gpt-response {
   margin-top: 10px;
   padding: 10px;
   background-color: #007bff;
   color: #fff;
   border-radius: 10px;
+}
+
+.gpt-logo {
+  margin-top: 10px;
+  width: 40px; 
+  height: 40px; 
+  margin-right: 10px; 
 }

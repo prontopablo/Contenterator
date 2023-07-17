@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './TicTacToe.css';
 import { getGPTResponse } from '../GPTAPI.js';
+import gptLogo from './gptIcon.png';
 
 const TicTacToe = () => {
   const initialBoard = Array(9).fill(null);
@@ -108,11 +109,12 @@ const TicTacToe = () => {
       <div className="board">
         {board.map((value, index) => renderCell(index))}
       </div>
-      {gptResponse && (
-        <div className="gpt-response">
-          <p>GPT Response: {gptResponse}</p>
-        </div>
-      )}
+      <div className="gpt-section">
+        <img src={gptLogo} alt="GPT Logo" className="gpt-logo" />
+          <div className="gpt-response">
+            <p>{gptResponse}</p>
+          </div>
+      </div>
       {gameResult && (
         <div className="winner">
           {gameResult === 'draw' ? <p>It's a draw!</p> : <p>Winner: {gameResult}</p>}

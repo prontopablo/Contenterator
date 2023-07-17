@@ -10,7 +10,9 @@
   transition: transform 0.3s ease;
   position: relative;
   overflow: hidden;
-  height: 500px; 
+  height: 500px;
+  width: 500px; 
+  border-radius: 25px;
 }
 
 .game-card:hover {

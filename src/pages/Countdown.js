@@ -3,11 +3,12 @@ import Clock from 'react-clock';
 import { getGPTResponse } from '../GPTAPI.js';
 import 'react-clock/dist/Clock.css';
 import './Countdown.css';
+import gptLogo from './gptIcon.png';
+
 
 const Countdown = () => {
   const [letters, setLetters] = useState([]);
   const [selectedLetters, setSelectedLetters] = useState([]);
-  const [solution, setSolution] = useState('');
   const [timer, setTimer] = useState(30);
   const [wordList, setWordList] = useState([]);
   const [score, setScore] = useState(0);
@@ -61,9 +62,7 @@ const Countdown = () => {
       //const validWordCount = validWords.length;
       //const validWordIndex = wordList.findIndex((word) => word.toLowerCase() === validWords[0]);
       //setSolution(`Word is valid, ${validWordIndex + 1}/${wordList.length} alphabetically (${validWordCount} valid word${validWordCount > 1 ? 's' : ''} found)`);
-    } else {
-      setSolution(`No valid word found.`);
-    }
+    } 
   }, [selectedLetters, wordList]);
 
   // Helper function to generate permutation indices
@@ -105,13 +104,23 @@ const Countdown = () => {
   }, [letters, timer, handleCheck]);
 
   const handleGenerateLetter = (type) => {
-    if (letters.length >= 9) {
+    if (letters.length >= 9 || (type === 'vowel' && countOccurrences(letters, vowels) >= 5) || (type === 'consonant' && countOccurrences(letters, consonants) >= 6)) {
       return;
     }
-
+  
     const availableLetters = type === 'vowel' ? vowels : consonants;
     const newLetter = availableLetters.charAt(Math.floor(Math.random() * availableLetters.length));
     setLetters([...letters, newLetter]);
+  };
+  
+  const countOccurrences = (arr, letters) => {
+    let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+      if (letters.includes(arr[i])) {
+        count++;
+      }
+    }
+    return count;
   };
 
   const handleDragStart = (event, letter, index) => {
@@ -164,10 +173,10 @@ const Countdown = () => {
         />
       </div>
       <div className="letters-select">
-        <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9}>
+        <button onClick={() => handleGenerateLetter('vowel')} disabled={letters.length >= 9 || countOccurrences(letters, vowels) >= 5}>
           Vowel
         </button>
-        <button onClick={() => handleGenerateLetter('consonant')} disabled={letters.length >= 9}>
+        <button onClick={() => handleGenerateLetter('consonant')} disabled={letters.length >= 9 || countOccurrences(letters, consonants) >= 6}>
           Consonant
         </button>
       </div>
@@ -185,20 +194,26 @@ const Countdown = () => {
       </div>
       <div className="score-section">
         <button onClick={handleCheck}>Check</button>
-        <p>{solution}</p>
         <p>Score: {score}</p>
       </div>
       <textarea
         className="rough-work-textbox"
-        placeholder="Rough work..."
+        placeholder="Rough work goes here..."
         value={roughWork}
         onChange={handleRoughWorkChange}
       />
-      <div className="gpt-response">
-      {gptResponse && <p>GPT Response: {gptResponse}</p>}
+      
+      <div className="gpt-section">
+        <img src={gptLogo} alt="GPT Logo" className="gpt-logo" />
+        <div className="gpt-response">
+          {gptResponse && <p>{gptResponse}</p>}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Countdown;
+
+//Select vowels/consonants until you have 9 letters, then the clock will start. Drag and drop the letters to rearrange them, the letters are read
+//from left to right to find the longest word you made. Try to beat GPT's word before the clock runs out!
