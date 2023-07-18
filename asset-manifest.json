@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/Contenterator/static/css/main.4381e531.css",
-    "main.js": "/Contenterator/static/js/main.7880e4de.js",
-    "static/media/ClockCountdown.mp3": "/Contenterator/static/media/ClockCountdown.d626f58121858786d478.mp3",
-    "static/media/chessIcon.png": "/Contenterator/static/media/chessIcon.8d957a93ddc75b29059d.png",
-    "static/media/gptIcon.png": "/Contenterator/static/media/gptIcon.47575ada94916b315f14.png",
-    "static/media/countdownIcon.png": "/Contenterator/static/media/countdownIcon.19f9cbd258d4699288bc.png",
-    "index.html": "/Contenterator/index.html",
-    "main.4381e531.css.map": "/Contenterator/static/css/main.4381e531.css.map",
-    "main.7880e4de.js.map": "/Contenterator/static/js/main.7880e4de.js.map"
+    "main.css": "/Contenterator/home/static/css/main.4381e531.css",
+    "main.js": "/Contenterator/home/static/js/main.1bf561df.js",
+    "static/media/ClockCountdown.mp3": "/Contenterator/home/static/media/ClockCountdown.d626f58121858786d478.mp3",
+    "static/media/chessIcon.png": "/Contenterator/home/static/media/chessIcon.8d957a93ddc75b29059d.png",
+    "static/media/gptIcon.png": "/Contenterator/home/static/media/gptIcon.47575ada94916b315f14.png",
+    "static/media/countdownIcon.png": "/Contenterator/home/static/media/countdownIcon.19f9cbd258d4699288bc.png",
+    "index.html": "/Contenterator/home/index.html",
+    "main.4381e531.css.map": "/Contenterator/home/static/css/main.4381e531.css.map",
+    "main.1bf561df.js.map": "/Contenterator/home/static/js/main.1bf561df.js.map"
   },
   "entrypoints": [
     "static/css/main.4381e531.css",
-    "static/js/main.7880e4de.js"
+    "static/js/main.1bf561df.js"
   ]
 }
