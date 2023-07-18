@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import Chessboard from 'chessboardjsx';
 import { Chess } from 'chess.js';
 import { getGPTResponse } from '../GPTAPI';
+import gptLogo from './gptIcon.png';
 
 const ChessComponent = () => {
   const initialBoard = new Chess().fen();
   const [board, setBoard] = useState(initialBoard);
-  const [currentPlayer, setCurrentPlayer] = useState('w'); // 'w' for white, 'b' for black
+  const [currentPlayer, setCurrentPlayer] = useState('w');
+  const [gptResponse, setGptResponse] = useState('');
 
   const handleUserMove = async (sourceSquare, targetSquare) => {
     const game = new Chess(board);
@@ -24,20 +26,33 @@ const ChessComponent = () => {
     setBoard(game.fen());
     setCurrentPlayer('b');
 
-    // Get GPT's move
-    const GPTResponse = await getGPTResponse(game.fen(), 'chess');
-    const GPTMove = GPTResponse.trim(); // Remove leading/trailing whitespace
+    let validGPTMove = false;
+    let retryCount = 0;
+    let GPTMove;
 
-    if (GPTMove) {
-      const GPTMoveSAN = game.move(GPTMove, { sloppy: true });
+    while (!validGPTMove && retryCount < 10) {
+      const response = await getGPTResponse(game.fen(), 'chess');
+      setGptResponse(response);
+      GPTMove = response.trim();
+
+      if (GPTMove) {
+        try {
+          game.move(GPTMove, { sloppy: true });
+          validGPTMove = true;
+        } catch (error) {
+          console.error('Invalid move:', error.message);
+        }
+      }
+
+      retryCount++;
+    }
+
+    if (validGPTMove) {
       setBoard(game.fen());
       setCurrentPlayer('w');
+    } else {
+      setGptResponse('GPT failed to make a valid move after 10 retries');
     }
-  };
-
-  const resetBoard = () => {
-    setBoard(initialBoard);
-    setCurrentPlayer('w');
   };
 
   return (
@@ -48,7 +63,14 @@ const ChessComponent = () => {
         dropOffBoard="trash"
         transitionDuration={300}
       />
+      <div className="gpt-section">
+        <img src={gptLogo} alt="GPT Logo" className="gpt-logo" />
+        <div className="gpt-response">
+          {gptResponse && <p>{gptResponse}</p>}
+        </div>
+      </div>
     </div>
+    
   );
 };
 

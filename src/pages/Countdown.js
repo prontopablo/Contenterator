@@ -4,6 +4,8 @@ import { getGPTResponse } from '../GPTAPI.js';
 import 'react-clock/dist/Clock.css';
 import './Countdown.css';
 import gptLogo from './gptIcon.png';
+import ClockCountdownSound from './ClockCountdown.mp3';
+
 
 
 const Countdown = () => {
@@ -14,6 +16,7 @@ const Countdown = () => {
   const [score, setScore] = useState(0);
   const [roughWork, setRoughWork] = useState('');
   const [gptResponse, setGptResponse] = useState('');
+  const [isTimerPlaying, setIsTimerPlaying] = useState(false);
 
   const vowels = 'AEIOU';
   const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
@@ -59,13 +62,9 @@ const Countdown = () => {
 
     if (validWords.length > 0) {
       setScore(maxLength);
-      //const validWordCount = validWords.length;
-      //const validWordIndex = wordList.findIndex((word) => word.toLowerCase() === validWords[0]);
-      //setSolution(`Word is valid, ${validWordIndex + 1}/${wordList.length} alphabetically (${validWordCount} valid word${validWordCount > 1 ? 's' : ''} found)`);
     } 
   }, [selectedLetters, wordList]);
 
-  // Helper function to generate permutation indices
   function getPermutationIndices(n, k) {
     const indices = Array.from({ length: k }, (_, i) => i);
     const result = [indices.slice()];
@@ -93,15 +92,19 @@ const Countdown = () => {
       const interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
-
+  
       if (timer === 0) {
         clearInterval(interval);
         handleCheck();
+      } else if (!isTimerPlaying) {
+        setIsTimerPlaying(true);
+        const audio = new Audio(ClockCountdownSound);
+        audio.play();
       }
-
+  
       return () => clearInterval(interval);
     }
-  }, [letters, timer, handleCheck]);
+  }, [letters, timer, handleCheck, isTimerPlaying]);
 
   const handleGenerateLetter = (type) => {
     if (letters.length >= 9 || (type === 'vowel' && countOccurrences(letters, vowels) >= 5) || (type === 'consonant' && countOccurrences(letters, consonants) >= 6)) {
@@ -152,7 +155,7 @@ const Countdown = () => {
       const fetchData = async () => {
         const response = await getGPTResponse(letters.join(''), 'countdown');
         console.log('GPT response:', response);
-        setGptResponse(response); // Set GPT response
+        setGptResponse(response);
       };
 
       fetchData();

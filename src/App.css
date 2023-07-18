@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f8f8f8; /* Light gray background color for the page */
+  background-color: #f8f8f8; 
   font-family: Arial, sans-serif;
 }
 
@@ -10,7 +10,7 @@ body {
 }
 
 .header {
-  background-color: #007bff; /* Blue header background color */
+  background-color: #007bff; 
   color: #fff;
   padding: 10px 20px;
   display: flex;
