@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Chessboard from 'chessboardjsx';
 import { Chess } from 'chess.js';
-import { getGPTResponse } from '../GPTAPI';
-import gptLogo from './gptIcon.png';
+import { getGPTResponse } from '../api/GPTAPI';
+import gptLogo from '../assets/gptIcon.png';
 
 const ChessComponent = () => {
   const initialBoard = new Chess().fen();
@@ -14,7 +14,7 @@ const ChessComponent = () => {
     const game = new Chess(board);
 
     if (game.gameOver || currentPlayer !== 'w') return;
-
+    
     const move = game.move({
       from: sourceSquare,
       to: targetSquare,

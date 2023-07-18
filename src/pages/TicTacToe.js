@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './TicTacToe.css';
-import { getGPTResponse } from '../GPTAPI.js';
-import gptLogo from './gptIcon.png';
+import '../styles/TicTacToe.css';
+import { getGPTResponse } from '../api/GPTAPI.js';
+import gptLogo from '../assets/gptIcon.png';
 
 const TicTacToe = () => {
   const initialBoard = Array(9).fill(null);

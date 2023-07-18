@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
-import tttIcon from './tttIcon.png';
-import chessIcon from './chessIcon.png';
-import countdownIcon from './countdownIcon.png';
+import '../styles/Home.css';
+import tttIcon from '../assets/tttIcon.png';
+import chessIcon from '../assets/chessIcon.png';
+import countdownIcon from '../assets/countdownIcon.png';
 
 const Home = () => {
   const games = [

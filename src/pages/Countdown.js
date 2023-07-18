@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Clock from 'react-clock';
-import { getGPTResponse } from '../GPTAPI.js';
+import { getGPTResponse } from '../api/GPTAPI.js';
 import 'react-clock/dist/Clock.css';
-import './Countdown.css';
-import gptLogo from './gptIcon.png';
-import ClockCountdownSound from './ClockCountdown.mp3';
+import '../styles/Countdown.css';
+import gptLogo from '../assets/gptIcon.png';
+import ClockCountdownSound from '../assets/ClockCountdown.mp3';
 
 
 
@@ -17,6 +17,8 @@ const Countdown = () => {
   const [roughWork, setRoughWork] = useState('');
   const [gptResponse, setGptResponse] = useState('');
   const [isTimerPlaying, setIsTimerPlaying] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+
 
   const vowels = 'AEIOU';
   const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
@@ -162,6 +164,10 @@ const Countdown = () => {
     }
   }, [letters, timer]);
 
+  const toggleInfo = () => {
+    setShowInfo(!showInfo);
+  };
+
   return (
     <div className="container">
       <div className="clock-container">
@@ -198,25 +204,33 @@ const Countdown = () => {
       <div className="score-section">
         <button onClick={handleCheck}>Check</button>
         <p>Score: {score}</p>
-      </div>
-      <textarea
-        className="rough-work-textbox"
-        placeholder="Rough work goes here..."
-        value={roughWork}
-        onChange={handleRoughWorkChange}
-      />
-      
+      </div>      
       <div className="gpt-section">
         <img src={gptLogo} alt="GPT Logo" className="gpt-logo" />
         <div className="gpt-response">
           {gptResponse && <p>{gptResponse}</p>}
         </div>
       </div>
+      <div className="info-button" onClick={toggleInfo}>
+        ?
+      </div>
+      {showInfo && (
+        <div className="info-popout">
+          <p>
+            Select vowels/consonants until you have 9 letters, then the clock will start.
+            Drag and drop the letters to rearrange them. The letters are read from left to right to find the longest word you made.
+            Try to beat GPT's word before the clock runs out!
+          </p>
+        </div>
+      )}
+        <textarea
+        className="rough-work-textbox"
+        placeholder="Rough work goes here..."
+        value={roughWork}
+        onChange={handleRoughWorkChange}
+      />
     </div>
   );
 };
 
 export default Countdown;
-
-//Select vowels/consonants until you have 9 letters, then the clock will start. Drag and drop the letters to rearrange them, the letters are read
-//from left to right to find the longest word you made. Try to beat GPT's word before the clock runs out!

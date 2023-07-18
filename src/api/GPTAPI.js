@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-const API_KEY = "Your API key";
+const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 const openai = new OpenAIApi(new Configuration({ apiKey: API_KEY }));
 
 export const getGPTResponse = async (userInput, gameType) => {
@@ -23,7 +23,7 @@ export const getGPTResponse = async (userInput, gameType) => {
     else if (gameType === "countdown") {
       prompt = `You are playing a game based on the UK quiz show Countdown. ONLY Using the letters provided: \n"${userInput}"\n make the longest possible English word by rearranging the letters`;
       systemPrompt = `Only use the letters provided, ensure the word exists and provide a short definition, before responding, ensure the word you respond with can be made up with the letters
-                      within the quotation marks, if the word does not exist, provide another word that does exist.`;
+                      provided, if the word does not exist, provide another word that does exist.`;
     }
 
     else {
