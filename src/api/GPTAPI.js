@@ -1,10 +1,15 @@
 import { Configuration, OpenAIApi } from "openai";
 
-const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-const openai = new OpenAIApi(new Configuration({ apiKey: API_KEY }));
-
 export const getGPTResponse = async (userInput, gameType) => {
   try {
+    const apiKey = localStorage.getItem('gptApiKey');
+    
+    if (!apiKey) {
+      throw new Error("GPT API Key not found. Please set the API key.");
+    }
+    
+    const openai = new OpenAIApi(new Configuration({ apiKey }));
+    
     let prompt, systemPrompt;
 
     if (gameType === "tic-tac-toe") {
